@@ -1,0 +1,22 @@
+{
+  "name": "workshop",
+  "version": "1.0.0",
+  "description": "work shop formation",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "init-product": "node init-products.js",
+    "init-user": "node init-user.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "jquery": "^3.3.1",
+    "mongoose": "^5.4.0",
+    "pug": "^2.0.3"
+  }
+}
