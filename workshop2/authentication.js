@@ -1,17 +1,11 @@
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/test');
 const user = require(__dirname + '/userModel.js');
+var bcrypt = require('bcrypt');
 
-module.exports = function (username, password, authenticationResponse) {
-    var res =  user.findOne({name: username}, (error, userDoc) => {
-        if (error) throw error;
+module.exports = async function (username, password) {
 
-        if (userDoc.name != username || userDoc.password != password) {
-            console.log('false');
-            return authenticationResponse(false);
+    let userDoc = await user.findOne({name: username});
 
-            
-        }
-        return authenticationResponse(true);
-    });
+    return await bcrypt.compare(password, userDoc.password)
 };

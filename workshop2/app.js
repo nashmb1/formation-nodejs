@@ -3,6 +3,7 @@ mongoose.connect('mongodb://localhost:27017/test');
 
 var express = require('express');
 bodyParser = require('body-parser');
+var helmet = require('helmet');
 const product = require(__dirname + '/productModel.js');
 const authenticate =  require(__dirname + '/authentication.js');
 const orderManger =  require(__dirname + '/orderManager.js');
@@ -12,10 +13,11 @@ var fs = require('fs');
 
 var app = new express();
 
+app.use(helmet());
 // set the view engine to ejs
 app.set('view engine', 'ejs');
 
-app.use(express.static(__dirname + '/views'));
+app.use(express.static(__dirname + '/views')); 
 
 app.get('/', function(req, res) {
     product.find((err, data) => {
@@ -25,13 +27,13 @@ app.get('/', function(req, res) {
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
-app.post('/login', function(req, res) {
-    authenticate(req.body.username, req.body.password, result => {
-        if (false === result) {
-            return res.status(401).json({ message: 'Login error'});
-        }
-        res.send("ok");
-    });
+app.post('/login', async function(req, res) {
+    let result = await authenticate(req.body.username, req.body.password);
+
+     if (!result) {
+        return res.status(401).json({ message: 'Login error'});
+     }
+     res.send("ok");
 });
 
 app.get('/order/:productid/:userid', function(req, res) {
@@ -42,7 +44,7 @@ app.get('/order/:productid/:userid', function(req, res) {
         return res.json(result);
     });
 });
-
+"debugger;"
 app.get('/orders/:userid', function(req, res) {
     orderManger.getUserOrders(req.params.userid, result => {
         if (!result) {
@@ -52,7 +54,6 @@ app.get('/orders/:userid', function(req, res) {
     });
 });
 
-console.log(productManger);
 app.get('/products/:userid', (req, res) => {
 
     console.log('req.params', req.params.userid);
@@ -63,4 +64,4 @@ app.get('/products/:userid', (req, res) => {
     };
 });
 
-app.listen(8080);
+app.listen(80880);
