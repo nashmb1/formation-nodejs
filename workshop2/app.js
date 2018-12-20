@@ -6,6 +6,7 @@ bodyParser = require('body-parser');
 const product = require(__dirname + '/productModel.js');
 const authenticate =  require(__dirname + '/authentication.js');
 const orderManger =  require(__dirname + '/orderManager.js');
+const productManger =  require(__dirname + '/productManager.js');
 
 var fs = require('fs');
 
@@ -49,6 +50,17 @@ app.get('/orders/:userid', function(req, res) {
         }
         return res.json(result);
     });
+});
+
+console.log(productManger);
+app.get('/products/:userid', (req, res) => {
+
+    console.log('req.params', req.params.userid);
+    async () => {
+        let products = await productManger.findUserProducts();
+        console.log(products);
+        res.json(await productManger.findUserProducts());
+    };
 });
 
 app.listen(8080);
