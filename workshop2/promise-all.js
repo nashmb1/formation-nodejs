@@ -27,16 +27,13 @@ var p4 = new Promise((resolve, reject) => {
 });
 
 var p5 = new Promise((resolve, reject) => {
-    setTimeout((param) => {
-        console.log(param)
-        reject('reject ' + param)
-    }, 2500, 'cinq');
+    reject('reject');
 });
 
 Promise
-    .race([p1, p2, p3, p4, p5])
+    .all([p1, p2, p3, p4, p5])
     .then(values => {
-        console.log("all race ", values);
+        console.log("all then ", values);
     })
     .catch(reason => {
         console.log("all catch ", reason)
